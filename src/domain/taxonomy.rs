@@ -21,6 +21,8 @@ pub struct Category<'a> {
 
     pub name: Cow<'a, str>,
     pub desc: Cow<'a, str>,
+
+    pub index: Option<u32>, // Only for lidarseg
 }
 
 impl<'a> From<AttributeModel<'a>> for Attribute<'a> {
@@ -49,7 +51,7 @@ impl<'a> ToPyDict for Attribute<'a> {
 
 impl<'a> From<CategoryModel<'a>> for Category<'a> {
     fn from(model: CategoryModel<'a>) -> Self {
-        Self { token: model.token, name: model.name, desc: model.description }
+        Self { token: model.token, name: model.name, desc: model.description, index: model.index }
     }
 }
 
@@ -66,6 +68,9 @@ impl<'a> ToPyDict for Category<'a> {
         dict.set_item("token", hex::encode(self.token))?;
         dict.set_item("name", self.name.as_ref())?;
         dict.set_item("description", self.desc.as_ref())?;
+        if let Some(index) = self.index {
+            dict.set_item("index", index)?;
+        }
 
         Ok(dict)
     }

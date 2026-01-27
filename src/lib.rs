@@ -14,4 +14,10 @@ mod _nuscenes_rs {
 
     #[pymodule_export]
     use super::nusc::NuScenes;
+
+    #[pymodule_init]
+    fn init(_m: &Bound<'_, PyModule>) -> PyResult<()> {
+        pyo3_log::init();
+        Ok(())
+    }
 }

@@ -76,3 +76,7 @@ define_view!(CalibratedSensorView, CalibratedSensorIter, CalibratedSensor);
 define_view!(LogView, LogIter, Log<'static>);
 define_view!(MapView, MapIter, Map<'static>);
 define_view!(SensorView, SensorIter, Sensor);
+
+// Extension
+define_view!(LidarSegView, LidarSegIter, LidarSeg<'static>);
+define_view!(PanopticView, PanopticIter, Panoptic<'static>);

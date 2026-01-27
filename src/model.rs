@@ -1,13 +1,15 @@
 use serde::{Deserialize, Deserializer};
+use serde_with::DeserializeAs;
 
 mod annotation;
+mod extensions;
 mod extraction;
 mod taxonomy;
 mod vehicle;
 
 pub use annotation::*;
+pub use extensions::*;
 pub use extraction::*;
-use serde_with::DeserializeAs;
 pub use taxonomy::*;
 pub use vehicle::*;
 

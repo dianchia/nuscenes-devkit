@@ -22,4 +22,6 @@ pub struct CategoryModel<'a> {
     pub name:        Cow<'a, str>,
     #[serde(borrow)]
     pub description: Cow<'a, str>,
+
+    pub index: Option<u32>, // Only in lidarseg
 }
