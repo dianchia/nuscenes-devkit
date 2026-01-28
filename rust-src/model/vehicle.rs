@@ -11,12 +11,12 @@ use crate::common::{SensorChannel, SensorModality};
 #[derive(Clone, Debug, Deserialize)]
 pub struct CalibratedSensorModel {
     #[serde(with = "hex::serde")]
-    pub token:        [u8; 16],
+    pub token: [u8; 16],
     #[serde(with = "hex::serde")]
     pub sensor_token: [u8; 16],
 
-    pub translation:      [f32; 3],
-    pub rotation:         [f32; 4],
+    pub translation: [f32; 3],
+    pub rotation: [f32; 4],
     #[serde_as(as = "EmptyMatrix3AsNone")]
     pub camera_intrinsic: Option<[[f32; 3]; 3]>,
 }
@@ -27,13 +27,13 @@ pub struct LogModel<'a> {
     pub token: [u8; 16],
 
     #[serde(borrow)]
-    pub logfile:       Cow<'a, str>,
+    pub logfile: Cow<'a, str>,
     #[serde(borrow)]
-    pub vehicle:       Cow<'a, str>,
+    pub vehicle: Cow<'a, str>,
     #[serde(borrow)]
     pub date_captured: Cow<'a, str>,
     #[serde(borrow)]
-    pub location:      Cow<'a, str>,
+    pub location: Cow<'a, str>,
 
     #[serde(skip)]
     pub map_token: [u8; 16], // Reverse index from Map
@@ -43,7 +43,7 @@ pub struct LogModel<'a> {
 #[derive(Clone, Debug, Deserialize)]
 pub struct MapModel<'a> {
     #[serde(with = "hex::serde")]
-    pub token:      [u8; 16],
+    pub token: [u8; 16],
     #[serde_as(as = "Box<[Hex]>")]
     pub log_tokens: Box<[[u8; 16]]>,
 
@@ -58,6 +58,6 @@ pub struct SensorModel {
     #[serde(with = "hex::serde")]
     pub token: [u8; 16],
 
-    pub channel:  SensorChannel,
+    pub channel: SensorChannel,
     pub modality: SensorModality,
 }

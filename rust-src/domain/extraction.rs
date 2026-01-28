@@ -17,12 +17,12 @@ pub struct EgoPose {
     pub timestamp: u64,
 
     pub translation: [f32; 3],
-    pub rotation:    [f32; 4],
+    pub rotation: [f32; 4],
 }
 
 #[derive(Clone, Debug)]
 pub struct Sample {
-    pub token:       [u8; 16],
+    pub token: [u8; 16],
     pub scene_token: [u8; 16],
 
     pub prev: Option<[u8; 16]>,
@@ -36,37 +36,37 @@ pub struct Sample {
 
 #[derive(Clone, Debug)]
 pub struct SampleData<'a> {
-    pub token:                   [u8; 16],
-    pub sample_token:            [u8; 16],
-    pub ego_pose_token:          [u8; 16],
+    pub token: [u8; 16],
+    pub sample_token: [u8; 16],
+    pub ego_pose_token: [u8; 16],
     pub calibrated_sensor_token: [u8; 16],
 
     pub prev: Option<[u8; 16]>,
     pub next: Option<[u8; 16]>,
 
     pub fileformat: Cow<'a, str>,
-    pub filename:   Cow<'a, str>,
+    pub filename: Cow<'a, str>,
 
-    pub timestamp:    u64,
+    pub timestamp: u64,
     pub is_key_frame: bool,
-    pub height:       u16,
-    pub width:        u16,
+    pub height: u16,
+    pub width: u16,
 
     pub modality: SensorModality, // From calibrated sensor -> sensor
-    pub channel:  SensorChannel,  // From calibrated sensor -> sensor
+    pub channel: SensorChannel,   // From calibrated sensor -> sensor
 }
 
 #[derive(Clone, Debug)]
 pub struct Scene<'a> {
-    pub token:     [u8; 16],
+    pub token: [u8; 16],
     pub log_token: [u8; 16],
 
     pub name: Cow<'a, str>,
     pub desc: Cow<'a, str>,
 
-    pub nbr_samples:        u16,
+    pub nbr_samples: u16,
     pub first_sample_token: [u8; 16],
-    pub last_sample_token:  [u8; 16],
+    pub last_sample_token: [u8; 16],
 }
 
 impl<'a> SampleData<'a> {
@@ -111,10 +111,10 @@ impl Sample {
 impl From<EgoPoseModel> for EgoPose {
     fn from(model: EgoPoseModel) -> Self {
         Self {
-            token:       model.token,
-            timestamp:   model.timestamp,
+            token: model.token,
+            timestamp: model.timestamp,
             translation: model.translation,
-            rotation:    model.rotation,
+            rotation: model.rotation,
         }
     }
 }
@@ -193,13 +193,13 @@ impl<'a> ToPyDict for SampleData<'a> {
 impl<'a> From<SceneModel<'a>> for Scene<'a> {
     fn from(model: SceneModel<'a>) -> Self {
         Self {
-            token:              model.token,
-            log_token:          model.log_token,
-            name:               model.name,
-            desc:               model.description,
-            nbr_samples:        model.nbr_samples,
+            token: model.token,
+            log_token: model.log_token,
+            name: model.name,
+            desc: model.description,
+            nbr_samples: model.nbr_samples,
             first_sample_token: model.first_sample_token,
-            last_sample_token:  model.last_sample_token,
+            last_sample_token: model.last_sample_token,
         }
     }
 }

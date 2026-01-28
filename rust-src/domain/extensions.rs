@@ -9,7 +9,7 @@ use crate::table::AsRefToken;
 
 #[derive(Clone, Debug)]
 pub struct LidarSeg<'a> {
-    pub token:             [u8; 16],
+    pub token: [u8; 16],
     pub sample_data_token: [u8; 16],
 
     pub filename: Cow<'a, str>,
@@ -17,7 +17,7 @@ pub struct LidarSeg<'a> {
 
 #[derive(Clone, Debug)]
 pub struct Panoptic<'a> {
-    pub token:             [u8; 16],
+    pub token: [u8; 16],
     pub sample_data_token: [u8; 16],
 
     pub filename: Cow<'a, str>,
@@ -25,11 +25,7 @@ pub struct Panoptic<'a> {
 
 impl<'a> From<LidarSegModel<'a>> for LidarSeg<'a> {
     fn from(model: LidarSegModel<'a>) -> Self {
-        Self {
-            token:             model.token,
-            sample_data_token: model.sample_data_token,
-            filename:          model.filename,
-        }
+        Self { token: model.token, sample_data_token: model.sample_data_token, filename: model.filename }
     }
 }
 
@@ -52,11 +48,7 @@ impl<'a> ToPyDict for LidarSeg<'a> {
 
 impl<'a> From<PanopticModel<'a>> for Panoptic<'a> {
     fn from(model: PanopticModel<'a>) -> Self {
-        Self {
-            token:             model.token,
-            sample_data_token: model.sample_data_token,
-            filename:          model.filename,
-        }
+        Self { token: model.token, sample_data_token: model.sample_data_token, filename: model.filename }
     }
 }
 

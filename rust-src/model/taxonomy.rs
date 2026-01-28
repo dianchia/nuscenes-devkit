@@ -8,7 +8,7 @@ pub struct AttributeModel<'a> {
     pub token: [u8; 16],
 
     #[serde(borrow)]
-    pub name:        Cow<'a, str>,
+    pub name: Cow<'a, str>,
     #[serde(borrow)]
     pub description: Cow<'a, str>,
 }
@@ -19,7 +19,7 @@ pub struct CategoryModel<'a> {
     pub token: [u8; 16],
 
     #[serde(borrow)]
-    pub name:        Cow<'a, str>,
+    pub name: Cow<'a, str>,
     #[serde(borrow)]
     pub description: Cow<'a, str>,
 

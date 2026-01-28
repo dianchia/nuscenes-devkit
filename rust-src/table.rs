@@ -10,7 +10,7 @@ pub trait AsRefToken: Send + Sync {
 
 /// Represents a table of data in nuScenes
 pub struct Table<T> {
-    pub data:  Arc<Box<[T]>>,
+    pub data: Arc<Box<[T]>>,
     pub index: HashMap<[u8; 16], usize, RandomState>,
 }
 

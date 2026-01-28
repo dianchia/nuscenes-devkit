@@ -10,28 +10,28 @@ use crate::table::AsRefToken;
 
 #[derive(Clone, Debug)]
 pub struct Instance {
-    pub token:          [u8; 16],
+    pub token: [u8; 16],
     pub category_token: [u8; 16],
 
-    pub nbr_annotations:        u32,
+    pub nbr_annotations: u32,
     pub first_annotation_token: [u8; 16],
-    pub last_annotation_token:  [u8; 16],
+    pub last_annotation_token: [u8; 16],
 }
 
 #[derive(Clone, Debug)]
 pub struct SampleAnnotation<'a> {
-    pub token:            [u8; 16],
-    pub sample_token:     [u8; 16],
-    pub instance_token:   [u8; 16],
+    pub token: [u8; 16],
+    pub sample_token: [u8; 16],
+    pub instance_token: [u8; 16],
     pub attribute_tokens: Box<[[u8; 16]]>,
 
     pub prev: Option<[u8; 16]>,
     pub next: Option<[u8; 16]>,
 
-    pub visibility:  Visibility,
+    pub visibility: Visibility,
     pub translation: [f32; 3],
-    pub rotation:    [f32; 4],
-    pub size:        [f32; 3],
+    pub rotation: [f32; 4],
+    pub size: [f32; 3],
 
     pub num_lidar_pts: u32,
     pub num_radar_pts: u32,
@@ -62,11 +62,11 @@ impl<'a> SampleAnnotation<'a> {
 impl From<InstanceModel> for Instance {
     fn from(model: InstanceModel) -> Self {
         Self {
-            token:                  model.token,
-            category_token:         model.category_token,
-            nbr_annotations:        model.nbr_annotations,
+            token: model.token,
+            category_token: model.category_token,
+            nbr_annotations: model.nbr_annotations,
             first_annotation_token: model.first_annotation_token,
-            last_annotation_token:  model.last_annotation_token,
+            last_annotation_token: model.last_annotation_token,
         }
     }
 }

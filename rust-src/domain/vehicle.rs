@@ -10,11 +10,11 @@ use crate::table::AsRefToken;
 
 #[derive(Clone, Debug)]
 pub struct CalibratedSensor {
-    pub token:        [u8; 16],
+    pub token: [u8; 16],
     pub sensor_token: [u8; 16],
 
-    pub translation:      [f32; 3],
-    pub rotation:         [f32; 4],
+    pub translation: [f32; 3],
+    pub rotation: [f32; 4],
     pub camera_intrinsic: Option<[[f32; 3]; 3]>,
 }
 
@@ -22,9 +22,9 @@ pub struct CalibratedSensor {
 pub struct Log<'a> {
     pub token: [u8; 16],
 
-    pub logfile:       Cow<'a, str>,
-    pub vehicle:       Cow<'a, str>,
-    pub location:      Cow<'a, str>,
+    pub logfile: Cow<'a, str>,
+    pub vehicle: Cow<'a, str>,
+    pub location: Cow<'a, str>,
     pub date_captured: Cow<'a, str>,
 
     pub map_token: [u8; 16], // From Map
@@ -32,7 +32,7 @@ pub struct Log<'a> {
 
 #[derive(Clone, Debug)]
 pub struct Map<'a> {
-    pub token:      [u8; 16],
+    pub token: [u8; 16],
     pub log_tokens: Box<[[u8; 16]]>,
 
     // [TODO]: Change to enums
@@ -45,7 +45,7 @@ pub struct Map<'a> {
 pub struct Sensor {
     pub token: [u8; 16],
 
-    pub channel:  SensorChannel,
+    pub channel: SensorChannel,
     pub modality: SensorModality,
 }
 
@@ -65,10 +65,10 @@ impl<'a> Log<'a> {
 impl From<CalibratedSensorModel> for CalibratedSensor {
     fn from(model: CalibratedSensorModel) -> Self {
         Self {
-            token:            model.token,
-            sensor_token:     model.sensor_token,
-            translation:      model.translation,
-            rotation:         model.rotation,
+            token: model.token,
+            sensor_token: model.sensor_token,
+            translation: model.translation,
+            rotation: model.rotation,
             camera_intrinsic: model.camera_intrinsic,
         }
     }
@@ -115,10 +115,10 @@ impl<'a> ToPyDict for Log<'a> {
 impl<'a> From<MapModel<'a>> for Map<'a> {
     fn from(model: MapModel<'a>) -> Self {
         Self {
-            token:      model.token,
+            token: model.token,
             log_tokens: model.log_tokens,
-            category:   model.category,
-            filename:   model.filename,
+            category: model.category,
+            filename: model.filename,
         }
     }
 }

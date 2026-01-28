@@ -11,7 +11,7 @@ mod _lib {
     use pyo3::prelude::*;
 
     #[pymodule_export]
-    use super::nusc::NuScenes;
+    use super::nusc::Tables;
 
     #[pymodule_init]
     fn init(_m: &Bound<'_, PyModule>) -> PyResult<()> {
