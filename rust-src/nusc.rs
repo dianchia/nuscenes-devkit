@@ -6,6 +6,7 @@ use std::time::Instant;
 use ahash::{HashMap, HashMapExt};
 use enum_map::EnumMap;
 use log::debug;
+use num_format::ToFormattedString;
 use pyo3::exceptions::{PyKeyError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
@@ -138,22 +139,22 @@ impl NuScenes {
             .transpose()?
             .map(|panoptic| Table::new(panoptic.into_par_iter().map(Panoptic::from).collect()));
 
-        // TODO: Load lidarseg and panoptic if exists
         // TODO: Load image annotations table created by `export_2d_annotations_as_json()`
 
         let elapsed = start_time.elapsed();
-        debug!(target: "nuscenes", "{:<9} log", log.len());
-        debug!(target: "nuscenes", "{:<9} map", map.len());
-        debug!(target: "nuscenes", "{:<9} sensor", sensor.len());
-        debug!(target: "nuscenes", "{:<9} calibrated sensor", calib.len());
-        debug!(target: "nuscenes", "{:<9} scene", scene.len());
-        debug!(target: "nuscenes", "{:<9} sample", sample.len());
-        debug!(target: "nuscenes", "{:<9} sample data", sample_data.len());
-        debug!(target: "nuscenes", "{:<9} ego pose", ego_pose.len());
-        debug!(target: "nuscenes", "{:<9} instance", instance.len());
-        debug!(target: "nuscenes", "{:<9} sample annotation", sample_ann.len());
-        debug!(target: "nuscenes", "{:<9} category", category.len());
-        debug!(target: "nuscenes", "{:<9} attribute", attribute.len());
+        let locale = num_format::Locale::en;
+        debug!(target: "nuscenes", "{:>9} log", log.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} map", map.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} sensor", sensor.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} calibrated sensor", calib.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} scene", scene.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} sample", sample.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} sample data", sample_data.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} ego pose", ego_pose.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} instance", instance.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} sample annotation", sample_ann.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} category", category.len().to_formatted_string(&locale));
+        debug!(target: "nuscenes", "{:>9} attribute", attribute.len().to_formatted_string(&locale));
         debug!(target: "nuscenes", "Done loading in {:.3} seconds", elapsed.as_secs_f32());
 
         let start_time = Instant::now();

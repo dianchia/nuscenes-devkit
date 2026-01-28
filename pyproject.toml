@@ -12,9 +12,9 @@ license = "Apache-2.0"
 classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.12",
-    "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Rust",
     "License :: Free for non-commercial use"
 ]
 authors = [
@@ -71,7 +71,7 @@ tracking = [
 
 [tool.maturin]
 python-source = "python-sdk"
-module-name = "nuscenes._nuscenes_rs"
+module-name = "nuscenes._lib"
 
 [tool.ruff]
 line-length = 120

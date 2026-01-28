@@ -1,5 +1,3 @@
-use pyo3::prelude::*;
-
 mod common;
 mod domain;
 mod model;
@@ -8,8 +6,8 @@ mod proxy;
 mod table;
 
 /// A Python module implemented in Rust.
-#[pymodule]
-mod _nuscenes_rs {
+#[pyo3::pymodule]
+mod _lib {
     use pyo3::prelude::*;
 
     #[pymodule_export]
