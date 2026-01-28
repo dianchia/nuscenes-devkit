@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
-use pyo3::exceptions::PyIndexError;
-use pyo3::prelude::*;
-use pyo3::types::PyDict;
+use pyo3::exceptions::{PyIndexError, PyTypeError};
+use pyo3::types::{PyDict, PySlice};
+use pyo3::{IntoPyObjectExt, prelude::*};
 
 use crate::domain::*;
 
@@ -19,11 +19,23 @@ macro_rules! define_view {
                 self.data.len()
             }
 
-            fn __getitem__(slf: PyRef<'_, Self>, idx: usize) -> PyResult<Bound<'_, PyDict>> {
-                slf.data
-                    .get(idx)
-                    .map(|d| d.to_py_dict(slf.py()))
-                    .ok_or_else(|| PyIndexError::new_err("Index out of range"))?
+            fn __getitem__<'py>(slf: PyRef<'py, Self>, index: Bound<'py, PyAny>) -> PyResult<Bound<'py, PyAny>> {
+                if let Ok(slice) = index.cast::<PySlice>() {
+                    let indices = slice.indices(slf.data.len() as isize)?;
+                    (indices.start..indices.stop)
+                        .step_by(indices.step as usize)
+                        .map(|i| slf.data[i as usize].to_py_dict(slf.py()))
+                        .collect::<PyResult<Vec<_>>>()?
+                        .into_bound_py_any(slf.py())
+                } else if let Ok(index) = index.extract::<usize>() {
+                    slf.data
+                        .get(index)
+                        .ok_or_else(|| PyIndexError::new_err("Index out of range"))
+                        .and_then(|d| d.to_py_dict(slf.py()))
+                        .and_then(|d| d.into_bound_py_any(slf.py()))
+                } else {
+                    Err(PyTypeError::new_err("Table indices must be slice or integers"))
+                }
             }
 
             fn __iter__(slf: PyRef<'_, Self>) -> PyResult<Py<$iter_name>> {
@@ -34,7 +46,7 @@ macro_rules! define_view {
 
         #[pyclass]
         pub struct $iter_name {
-            pub data:  Arc<Box<[$model_type]>>,
+            pub data: Arc<Box<[$model_type]>>,
             pub index: usize,
         }
 
@@ -80,3 +92,30 @@ define_view!(SensorView, SensorIter, Sensor);
 // Extension
 define_view!(LidarSegView, LidarSegIter, LidarSeg<'static>);
 define_view!(PanopticView, PanopticIter, Panoptic<'static>);
+
+// #[pyclass(sequence)]
+// pub struct EgoPoseView {
+//     pub data: Arc<Box<[EgoPose]>>,
+// }
+
+// #[pymethods]
+// impl EgoPoseView {
+//     fn __getitem__<'py>(slf: PyRef<'py, Self>, index: Bound<'py, PyAny>) -> PyResult<Bound<'py, PyAny>> {
+//         if let Ok(slice) = index.cast::<PySlice>() {
+//             let indices = slice.indices(slf.data.len() as isize)?;
+//             (indices.start..indices.stop)
+//                 .step_by(indices.step as usize)
+//                 .map(|i| slf.data[i as usize].to_py_dict(slf.py()))
+//                 .collect::<PyResult<Vec<_>>>()?
+//                 .into_bound_py_any(slf.py())
+//         } else if let Ok(index) = index.extract::<usize>() {
+//             slf.data
+//                 .get(index)
+//                 .ok_or_else(|| PyIndexError::new_err("Index out of range"))
+//                 .and_then(|d| d.to_py_dict(slf.py()))
+//                 .and_then(|d| d.into_bound_py_any(slf.py()))
+//         } else {
+//             Err(PyTypeError::new_err("Table indices must be slice or integers"))
+//         }
+//     }
+// }
