@@ -46,13 +46,6 @@ if not PYTHON_VERSION == 3:
     raise ValueError("nuScenes dev-kit only supports Python version 3.")
 
 
-class NuScenesRust:
-    def __init__(self, version: str = "v1.0-mini", dataroot: str = "/data/sets/nuscenes"):
-        from ._nuscenes_rs import NuScenes
-
-        self.nusc = NuScenes(version, dataroot)
-
-
 class NuScenes:
     """
     Database class for nuScenes to help query and retrieve information from the database.

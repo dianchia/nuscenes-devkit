@@ -45,31 +45,31 @@ where
 }
 
 #[pyclass]
-/// NuScenes dataset implemented in Rust.
-pub struct NuScenes {
+/// Class for loading tables and querying data from the nuScenes dataset.
+pub struct Tables {
     // Vehicle
-    log:         Table<Log<'static>>,
-    map:         Table<Map<'static>>,
-    sensor:      Table<Sensor>,
-    calib:       Table<CalibratedSensor>,
+    log: Table<Log<'static>>,
+    map: Table<Map<'static>>,
+    sensor: Table<Sensor>,
+    calib: Table<CalibratedSensor>,
     // Extraction
-    scene:       Table<Scene<'static>>,
-    sample:      Table<Sample>,
+    scene: Table<Scene<'static>>,
+    sample: Table<Sample>,
     sample_data: Table<SampleData<'static>>,
-    ego_pose:    Table<EgoPose>,
+    ego_pose: Table<EgoPose>,
     // Annotation
-    instance:    Table<Instance>,
-    sample_ann:  Table<SampleAnnotation<'static>>,
+    instance: Table<Instance>,
+    sample_ann: Table<SampleAnnotation<'static>>,
     // Taxonomy
-    category:    Table<Category<'static>>,
-    attribute:   Table<Attribute<'static>>,
+    category: Table<Category<'static>>,
+    attribute: Table<Attribute<'static>>,
     // Extensions
-    lidarseg:    Option<Table<LidarSeg<'static>>>,
-    panoptic:    Option<Table<Panoptic<'static>>>,
+    lidarseg: Option<Table<LidarSeg<'static>>>,
+    panoptic: Option<Table<Panoptic<'static>>>,
 }
 
 #[pymethods]
-impl NuScenes {
+impl Tables {
     #[new]
     fn new(version: &str, dataroot: &str) -> PyResult<Self> {
         let table_root = Path::new(dataroot).join(version);
@@ -324,25 +324,23 @@ impl NuScenes {
             "sample_annotation" => slf.lookup_in_table(slf.py(), &slf.sample_ann, &bytes),
             "category" => slf.lookup_in_table(slf.py(), &slf.category, &bytes),
             "attribute" => slf.lookup_in_table(slf.py(), &slf.attribute, &bytes),
-            "lidarseg" => {
-                slf.lidarseg
-                    .as_ref()
-                    .ok_or_else(|| PyValueError::new_err("lidarseg not loaded due to missing 'lidarseg.json'"))
-                    .and_then(|t| slf.lookup_in_table(slf.py(), t, &bytes))
-            }
-            "panoptic" => {
-                slf.panoptic
-                    .as_ref()
-                    .ok_or_else(|| PyValueError::new_err("panoptic is not loaded due to missing 'panoptic.json'"))
-                    .and_then(|t| slf.lookup_in_table(slf.py(), t, &bytes))
-            }
+            "lidarseg" => slf
+                .lidarseg
+                .as_ref()
+                .ok_or_else(|| PyValueError::new_err("lidarseg not loaded due to missing 'lidarseg.json'"))
+                .and_then(|t| slf.lookup_in_table(slf.py(), t, &bytes)),
+            "panoptic" => slf
+                .panoptic
+                .as_ref()
+                .ok_or_else(|| PyValueError::new_err("panoptic is not loaded due to missing 'panoptic.json'"))
+                .and_then(|t| slf.lookup_in_table(slf.py(), t, &bytes)),
             // Usually unreachable, checks should be done in Python.
             _ => Err(PyKeyError::new_err(format!("Table '{table}' not found"))),
         }
     }
 }
 
-impl NuScenes {
+impl Tables {
     fn lookup_in_table<'py, T: ToPyDict + AsRefToken>(
         &self, py: Python<'py>, table: &Table<T>, token: &[u8; 16],
     ) -> PyResult<Bound<'py, PyDict>> {

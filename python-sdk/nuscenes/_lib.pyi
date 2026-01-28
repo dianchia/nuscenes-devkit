@@ -1,6 +1,6 @@
 from typing import Any, Dict, List
 
-class NuScenes:
+class Tables:
     def __init__(self, version: str, dataroot: str) -> None: ...
     def get(self, table: str, token: str) -> Dict[str, Any]: ...
     @property
