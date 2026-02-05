@@ -281,14 +281,14 @@ class NuScenes:
 
         self._loader = _RustLoader(version, dataroot, verbose, map_resolution) if use_rust else _PythonLoader(version, dataroot, verbose, map_resolution)
 
-        if self._loader.lidarseg is not None:
+        if getattr(self._loader, "lidarseg", None) is not None:
             self.lidarseg_idx2name_mapping = dict()
             self.lidarseg_name2idx_mapping = dict()
             self.load_lidarseg_cat_name_mapping()
             # Sort the colormap to ensure that it is ordered according to the indices in self.category.
             self.colormap = {c['name']: self.colormap[c['name']] for c in sorted(self.category, key=lambda k: k['index'])}
             self.table_names.append("lidarseg")
-        if self._loader.panoptic is not None:
+        if getattr(self._loader, "panoptic", None) is not None:
             self.table_names.append("panoptic")
 
         # Initialize NuScenesExplorer class.
